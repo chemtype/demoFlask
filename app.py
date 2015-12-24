@@ -23,7 +23,13 @@ def homeScreen():
 
 @app.route('/train', methods=['GET','POST'])
 def trainScreen():
-    return "This is where the training page will go!"
+    if request.method == 'POST':
+        file = request.files['file']
+        if file and allowed_file(file.filename):
+            filename = file.filename
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            return redirect("/")
+    return render_template("train.html")
 
 if __name__ == '__main__':
     app.run(port=8000)

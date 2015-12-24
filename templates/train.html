@@ -4,15 +4,15 @@
 </head>
 <body onload="init()">
     <h1><a href="/">ChemType</a></h1>
-    <h2>The Molecule Recognition Engine</h2>    
-        <p>For now, you can upload a file to be recognized. (.png only)</p>
-        <p>Want to help us improve our model? <a href="/train"> Help us train the engine!</a></p>
+    <h2>The Molecule Recognition Engine</h2>
+    <h3>Model Training Page</h3>   
+    <img src="/static/img/9.png" alt="9.png"> 
+        <p>Upload a picture of the molecule. (.png only)</p>
         <form action="" method=post enctype=multipart/form-data>
          <input type=file name=file>
          <input type=submit value=Upload>
         </form>
-        <p>You can also try drawing something...</p>
-        
+        <p>Draw the molecule.</p>
             <script type="text/javascript">
             var canvas, ctx, flag = false,
                 prevX = 0,

@@ -1,4 +1,5 @@
 import os
+from random import randrange
 from flask import Flask, render_template, request, redirect, url_for
 
 #Configuration
@@ -29,7 +30,7 @@ def trainScreen():
             filename = file.filename
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             return redirect("/")
-    return render_template("train.html")
+    return render_template("train.html", molecule=randrange(26))
 
 if __name__ == '__main__':
     app.run(port=8000)

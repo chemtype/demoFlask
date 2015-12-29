@@ -1,10 +1,11 @@
 import os
 from random import randrange
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, send_from_directory
 
 #Configuration
 app = Flask(__name__)
 UPLOAD_FOLDER = '/Users/bradleyemi/newchemtype/uploads'
+NEW_UPLOAD_FOLDER = '/uploads'
 ALLOWED_EXTENSIONS = set(['png'])
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
@@ -12,8 +13,18 @@ def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
 
-@app.route('/', methods=['GET','POST'])
+@app.route('/', methods=['GET'])
 def homeScreen():
+    if request.method == 'POST':
+        file = request.files['file']
+        if file and allowed_file(file.filename):
+            filename = file.filename
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            return redirect("/")
+    return render_template("index.html")
+
+@app.route('/typeset', methods=['POST'])
+def typesetScreen():
     if request.method == 'POST':
         file = request.files['file']
         if file and allowed_file(file.filename):
@@ -32,5 +43,9 @@ def trainScreen():
             return redirect("/")
     return render_template("train.html", molecule=randrange(26))
 
+#@app.route('/js/<path:path>')
+#def send_js(path):
+#    return send_from_directory('js', path)
+
 if __name__ == '__main__':
-    app.run(port=8000)
+    app.run(port=9000)

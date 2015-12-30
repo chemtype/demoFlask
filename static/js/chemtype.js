@@ -42,7 +42,7 @@
                 dot_flag = false;
 
             var x = "black",
-                y = 2;
+                y = 5;
 
             function init() {
                 canvas = document.getElementById('can');
@@ -64,40 +64,11 @@
                 }, false);
             }
 
-            function color(obj) {
-                switch (obj.id) {
-                    case "green":
-                        x = "green";
-                        break;
-                    case "blue":
-                        x = "blue";
-                        break;
-                    case "red":
-                        x = "red";
-                        break;
-                    case "yellow":
-                        x = "yellow";
-                        break;
-                    case "orange":
-                        x = "orange";
-                        break;
-                    case "black":
-                        x = "black";
-                        break;
-                    case "white":
-                        x = "white";
-                        break;
-                }
-                if (x == "white") y = 14;
-                else y = 2;
-
-            }
-
             function draw() {
                 ctx.beginPath();
                 ctx.moveTo(prevX, prevY);
                 ctx.lineTo(currX, currY);
-                ctx.strokeStyle = x;
+                ctx.strokeStyle = "black";
                 ctx.lineWidth = y;
                 ctx.stroke();
                 ctx.closePath();
@@ -108,19 +79,12 @@
                     document.getElementById("canvasimg").style.display = "none";
             }
 
-            function save() {
-                document.getElementById("canvasimg").style.border = "2px solid";
-                var dataURL = canvas.toDataURL();
-                document.getElementById("canvasimg").src = dataURL;
-                document.getElementById("canvasimg").style.display = "inline";
-            }
-
             function findxy(res, e) {
                 if (res == 'down') {
                     prevX = currX;
                     prevY = currY;
-                    currX = e.clientX - canvas.offsetLeft;
-                    currY = e.clientY - canvas.offsetTop;
+                    currX = e.pageX - canvas.offsetLeft;
+                    currY = e.pageY - canvas.offsetTop;
 
                     flag = true;
                     dot_flag = true;
@@ -139,8 +103,8 @@
                     if (flag) {
                         prevX = currX;
                         prevY = currY;
-                        currX = e.clientX - canvas.offsetLeft;
-                        currY = e.clientY - canvas.offsetTop;
+                        currX = e.pageX - canvas.offsetLeft;
+                        currY = e.pageY - canvas.offsetTop;
                         draw();
                     }
                 }

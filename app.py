@@ -1,14 +1,16 @@
 import os
 import base64
 import subprocess
+import uuid
 from PIL import Image
 from io import BytesIO
 from random import randrange
-from flask import Flask, render_template, request, redirect, url_for, send_from_directory
+from flask import Flask, render_template, request, redirect, make_response, url_for, send_from_directory
 
 #Configuration
 app = Flask(__name__)
-UPLOAD_FOLDER = '/Users/bradleyemi/demoFlask/uploads'
+#UPLOAD_FOLDER = '/Users/bradleyemi/demoFlask/uploads'
+UPLOAD_FOLDER = '/Users/triki/Desktop/demoFlask-master/uploads'
 NEW_UPLOAD_FOLDER = '/uploads'
 ALLOWED_EXTENSIONS = set(['png'])
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -24,31 +26,33 @@ def homeScreen():
         data = request.json
         imageData = data["base64PNGData"]
         im = Image.open(BytesIO(base64.b64decode(imageData)))
-        im.save(UPLOAD_FOLDER + '/unlabeled' + '/test.png', 'PNG')
+        im.save(UPLOAD_FOLDER + '/unlabeled' + '/typeset_'+uuid.uuid4().hex+'.png', 'PNG')
         print "saved"
     return render_template("index.html")
 
 @app.route('/train', methods=['GET','POST'])
 def trainScreen():
-    moleculeID = randrange(26)
     if request.method == 'POST':
         data = request.json
+        # in POST method expect previously sent molecule id
+        moleculeID = data["moleculeID"]
         imageData = data["base64PNGData"]
         im = Image.open(BytesIO(base64.b64decode(imageData)))
         try: 
-            im.save(UPLOAD_FOLDER + "/" + str(moleculeID) + '/test.png', 'PNG')
-            print "1"
+            im.save(UPLOAD_FOLDER + "/" + str(moleculeID) + '/train_'+uuid.uuid4().hex+'.png', 'PNG')
         except IOError:
             try:
                 subprocess.call(["mkdir", UPLOAD_FOLDER + "/" + str(moleculeID)])
-                im.save(UPLOAD_FOLDER + "/" + str(moleculeID) + '/test.png', 'PNG')
-                print "2"
+                im.save(UPLOAD_FOLDER + "/" + str(moleculeID) + '/train_'+uuid.uuid4().hex+'.png', 'PNG')
             except:
-                print "3"
-                return redirect(url_for('failureScreen'))
-        print "4"
-        return redirect(url_for('successScreen'))
-        print "5"
+                resp = make_response('{"redirect" : "'+ url_for('failureScreen') + '"}', 200)
+                resp.mimetype = "application/json; charset=utf-8"
+                return resp
+        resp = make_response('{"redirect" : "'+ url_for('successScreen') + '"}', 200)
+        resp.mimetype = "application/json; charset=utf-8"
+        return resp
+    # In GET method randomly choose a molecule id
+    moleculeID = randrange(26)
     return render_template("train.html", molecule=moleculeID)
 
 @app.route('/train/success', methods=['GET','POST'])

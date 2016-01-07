@@ -2,7 +2,6 @@ function typesetCanvas() {
     // Generate the image data
     var Pic = document.getElementById("can").toDataURL("image/png");
     Pic = Pic.replace(/^data:image\/(png|jpg);base64,/, "")
-    <!--            console.log(Pic)-->
     // Sending the image data to Server
     $.ajax({
            type: 'POST',
@@ -16,22 +15,20 @@ function typesetCanvas() {
            });
 }
 
-function trainFromCanvas() {
+function trainFromCanvas(moleculeID) {
     // Generate the image data
     var Pic = document.getElementById("can").toDataURL("image/png");
     Pic = Pic.replace(/^data:image\/(png|jpg);base64,/, "")
-    <!--            console.log(Pic)-->
     // Sending the image data to Server
-    $.ajax({
-           type: 'POST',
-           url: 'train',
-           data: '{ "base64PNGData" : "' + Pic + '" }',
-           contentType: 'application/json; charset=utf-8',
-           dataType: 'json',
-           success: function (msg) {
-           alert("Done, Training Picture Uploaded.");
-           }
-           });
+    var jqxhr = $.ajax({
+                       type: 'POST',
+                       url: 'train',
+                       data: '{ "moleculeID": "' + moleculeID + '", "base64PNGData": "' + Pic + '"}',
+                       contentType: 'application/json; charset=utf-8'
+                       })
+        .always(function(data, textStatus, jqxhr) {
+                window.location.href=data["redirect"];
+        });
 }
 
 var canvas, ctx, flag = false,

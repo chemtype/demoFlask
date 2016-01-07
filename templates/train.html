@@ -9,19 +9,12 @@
 <body onload="init()">
     <h1><a href="/">ChemType</a></h1>
     <h2>The Molecule Recognition Engine</h2>
-    <h3>Model Training Page</h3>   
+    <h3>Model Training Page</h3>
     <img src="/static/img/{{ molecule }}.png" alt="{{ molecule }}.png" height=200> 
-        <!--<p>Upload a picture of the molecule. (.png only)</p>-->
-        <!--<form action="" method=post enctype=multipart/form-data>-->
-         <!--<input type=file name=file>-->
-         <!--<input type=submit value=Upload>-->
-        <!--</form>-->
         <p>Draw the above molecule to train the model...</p>
     <canvas id="can" width="400" height="400" style ="border:2px solid;"></canvas>
     <img id="canvasimg">
-    <!--<input type="button" value="save" id="btn" size="30" onclick="save()">-->
-    <!--<input type="button" value="clear" id="clr" size="23" onclick="erase()">-->
     <button onclick="javascript:erase();return false;">Clear Picture</button>
-    <button onclick="javascript:trainFromCanvas();return false;">Upload Training Picture</button>
+    <button onclick="javascript:trainFromCanvas('{{ molecule }}');return false;">Upload Training Picture</button>
 </body>
 </html>

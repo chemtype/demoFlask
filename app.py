@@ -10,7 +10,7 @@ from flask import Flask, render_template, request, redirect, make_response, url_
 #Configuration
 app = Flask(__name__)
 #UPLOAD_FOLDER = '/Users/bradleyemi/demoFlask/uploads'
-UPLOAD_FOLDER = '/Users/triki/Desktop/demoFlask-master/uploads'
+UPLOAD_FOLDER = '/home/azureuser/demoFlask/uploads'
 NEW_UPLOAD_FOLDER = '/uploads'
 ALLOWED_EXTENSIONS = set(['png'])
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
